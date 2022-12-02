@@ -12,7 +12,10 @@ app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-mongoose.connect(process.env.DATABASE_URI);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.DATABASE_URI)
+  .then(res => console.log("Connected to DB"))
+  .catch(err => console.log(err))
 
 app.use('/api/search', searchRouter);
 app.use('/api/booking', bookingRouter);

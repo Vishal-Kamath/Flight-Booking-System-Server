@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import UserModel from '../model/user.model';
 import { ReqUserObject } from '../schema/user.schema';
+import bcrypt from 'bcrypt';
 
 export const handleRegister = async (
   req: Request<{}, {}, ReqUserObject>,
@@ -13,9 +14,13 @@ export const handleRegister = async (
   // check if user already exists
   if (userAlreadyExists) return res.status(409).send('user already exists'); // Conflict
 
+  // hash password
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+  // create new user
   const newUser = new UserModel({
     username: req.body.username,
-    password: req.body.password,
+    password: hashedPassword,
     name: req.body.name,
     email: req.body.email,
     dob: new Date(req.body.dob),

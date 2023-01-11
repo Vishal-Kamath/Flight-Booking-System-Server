@@ -17,20 +17,24 @@ export const handleRegister = async (
   // hash password
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-  // create new user
-  const newUser = new UserModel({
-    username: req.body.username,
-    password: hashedPassword,
-    name: req.body.name,
-    email: req.body.email,
-    dob: new Date(req.body.dob),
-    gender: req.body.gender,
-    coins: 10000,
-  });
-
   try {
+    // create new user
+    const newUser = new UserModel({
+      username: req.body.username,
+      password: hashedPassword,
+      refreshToken: '',
+      name: req.body.name,
+      email: req.body.email,
+      dob: new Date(req.body.dob),
+      gender: req.body.gender,
+      coins: 10000,
+    });
+
+    // save user
     const user = await newUser.save();
-    res.status(200).send(user);
+    res
+      .status(201)
+      .send({ message: `success new user ${user.username} was created` });
   } catch (err: any) {
     console.log(err);
     res.status(502).send(err); // Bad Gateway

@@ -8,6 +8,8 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import corsOptions from './config/corsOptions';
 import connectToDb from './utils/connectToDb';
+import cookieParser from 'cookie-parser';
+import { router as registerRouter } from './routes/api/register';
 
 // creating an express app
 const app: Application = express();
@@ -19,11 +21,17 @@ const PORT = process.env.PORT || 3500;
 app.use(cors(corsOptions));
 
 // Middleware
+// from urlencoded data / form data
+app.use(express.urlencoded({ extended: false }));
+
+// parse json
+app.use(express.json());
+
+// cookie parser
+app.use(cookieParser());
 
 // Routes
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World');
-});
+app.use('/register', registerRouter);
 
 // 404
 app.all('*', (req: Request, res: Response) => {

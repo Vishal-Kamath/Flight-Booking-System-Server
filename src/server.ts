@@ -7,6 +7,7 @@ dotenv.config({ path: path.join(__dirname, '..', '.env') });
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import corsOptions from './config/corsOptions';
+import connectToDb from './utils/connectToDb';
 
 // creating an express app
 const app: Application = express();
@@ -32,6 +33,8 @@ app.all('*', (req: Request, res: Response) => {
 // error handling
 
 // listening
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`app listening on port ${PORT}`);
+
+  await connectToDb();
 });

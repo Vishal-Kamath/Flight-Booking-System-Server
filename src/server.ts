@@ -11,6 +11,8 @@ import connectToDb from './utils/connectToDb';
 import cookieParser from 'cookie-parser';
 import { router as registerRouter } from './routes/api/register';
 import { router as authRouter } from './routes/api/auth';
+import { router as userRouter } from './routes/api/user';
+import verifyJwt from './middleware/verifyJwt';
 
 // creating an express app
 const app: Application = express();
@@ -34,6 +36,10 @@ app.use(cookieParser());
 // Routes
 app.use('/register', registerRouter);
 app.use('/auth', authRouter);
+
+app.use(verifyJwt);
+
+app.use('/user', userRouter);
 
 // 404
 app.all('*', (req: Request, res: Response) => {

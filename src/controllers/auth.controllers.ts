@@ -21,7 +21,7 @@ export const handleAuthentication = async (
     try {
       // create JWT
       // Access Token
-      const access_private = process.env.ACCESS_TOKENT_PRIVATE;
+      const access_private = process.env.ACCESS_TOKEN_PRIVATE;
       if (!access_private) throw Error('access token private secret not found');
 
       const accessToken = jwt.sign(
@@ -31,7 +31,7 @@ export const handleAuthentication = async (
       );
 
       // Refresh Token
-      const refresh_private = process.env.REFRESH_TOKENT_PRIVATE;
+      const refresh_private = process.env.REFRESH_TOKEN_PRIVATE;
       if (!refresh_private)
         throw Error('refresh token private secret not found');
 
